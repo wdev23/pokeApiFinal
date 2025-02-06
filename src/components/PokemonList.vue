@@ -1,10 +1,13 @@
 <template>
   <div class="pokemon-list">
     <h1>Pokémon List</h1>
-    <PokemonSearch @search="updateFilteredPokemons" />
+    <div class="filters">
+      <PokemonSearch @search="updateFilteredPokemons" />
+      <FavoriteFilter v-model="showFavoritesOnly" />
+    </div>
     <div class="pokemon-grid">
       <div
-        v-for="pokemon in displayedPokemons"
+        v-for="pokemon in filteredPokemons"
         :key="pokemon.name"
         class="pokemon-card"
       >
@@ -21,14 +24,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import PokemonSearch from "./PokemonSearch.vue";
 import FavoriteStar from "./FavoriteStar.vue";
+import FavoriteFilter from "./FavoriteFilter.vue";
 import { useFavoriteStore } from "../stores/favorite";
 import type { Pokemon } from "../services/pokemonService";
 
 const favoriteStore = useFavoriteStore();
 const displayedPokemons = ref<Pokemon[]>([]);
+const showFavoritesOnly = ref(false);
+
+const filteredPokemons = computed(() => {
+  if (!showFavoritesOnly.value) return displayedPokemons.value;
+  return displayedPokemons.value.filter((pokemon) =>
+    favoriteStore.favorites.includes(pokemon.name)
+  );
+});
 
 const toggleFavorite = (pokemonName: string) => {
   favoriteStore.toggleFavorite(pokemonName);
@@ -95,5 +107,12 @@ h1 {
 .pokemon-card h3 {
   margin: 10px 0;
   text-transform: capitalize;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
 }
 </style>
