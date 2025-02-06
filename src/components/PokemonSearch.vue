@@ -44,16 +44,27 @@ onMounted(async () => {
 
 <style scoped>
 .pokemon-search {
-  padding: 20px;
+  flex: 1;
+  max-width: 300px;
 }
 
 .search-input {
   width: 100%;
-  max-width: 300px;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
+  padding: 10px 15px;
+  border: 1px solid #444;
   border-radius: 4px;
   font-size: 16px;
+  background: #2a2a2a;
+  color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #ffd700;
+}
+
+.search-input::placeholder {
+  color: #888;
 }
 </style>

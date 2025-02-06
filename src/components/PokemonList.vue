@@ -5,7 +5,7 @@
       <PokemonSearch @search="updateFilteredPokemons" />
       <FavoriteFilter v-model="showFavoritesOnly" />
     </div>
-    <div class="pokemon-grid">
+    <div v-if="filteredPokemons.length" class="pokemon-grid">
       <div
         v-for="pokemon in filteredPokemons"
         :key="pokemon.name"
@@ -20,6 +20,7 @@
         <h3>{{ pokemon.name }}</h3>
       </div>
     </div>
+    <div v-else class="no-results">No Pokémon found</div>
   </div>
 </template>
 
@@ -56,6 +57,7 @@ const updateFilteredPokemons = (pokemons: Pokemon[]) => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  color: #fff;
 }
 
 h1 {
@@ -73,10 +75,17 @@ h1 {
 .pokemon-card {
   position: relative;
   padding: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid #444;
   border-radius: 8px;
   text-align: center;
-  background: #2a2a2a; /* Adding dark background to match your theme */
+  background: #2a2a2a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.pokemon-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .favorite-star {
@@ -111,8 +120,19 @@ h1 {
 
 .filters {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 40px;
   padding: 20px;
+  margin: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2em;
+  color: #888;
 }
 </style>
